@@ -32,3 +32,21 @@ request.get({ url: url, json: true }, (errW, dataW) => {
     `${weather_descriptions}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees out`
   );
 });
+
+// const urlGeoCoding =
+//   "https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoiZGlnaXRhbGNvbm5lY3Rpb24iLCJhIjoiY2tsaHFvZjlpMGZ6eTJvcnJ5azMwN3pvbSJ9.JI0HTvWr7LYbyHnCgwrhfg";
+
+const urlGeoCoding =
+  "https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoiZGlnaXRhbGNvbm5lY3Rpb24iLCJhIjoiY2tsaHFvZjlpMGZ6eTJvcnJ5azMwN3pvbSJ9.JI0HTvWr7LYbyHnCgwrhfg&limit=1";
+
+request.get({ url: urlGeoCoding, json: true }, (errGeo, resGeo) => {
+  if (errGeo) return console.log(errGeo);
+
+  const geoLocation = resGeo.body;
+
+  const place_name = geoLocation.features[0].place_name;
+  const lat = geoLocation.features[0].center[1];
+  const long = geoLocation.features[0].center[0];
+
+  console.log(`Place: ${place_name}, Lat:${lat}, Long:${long}\n`);
+});
