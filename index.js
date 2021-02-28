@@ -1,6 +1,7 @@
 const request = require("request");
 const geocode = require("./utils/geocode.js");
-const weather = require("./utils/weather.js");
+const forecast = require("./utils/forecast.js");
+const yargs = require("yargs");
 
 /******************************************************/
 
@@ -73,13 +74,28 @@ const weather = require("./utils/weather.js");
 
 /******************************************************/
 
-geocode("Philadelphia", (error, data) => {
-  if (error) return console.log(error);
-  console.log(data);
-});
+const address = process.argv[2];
 
-// 37.8267, -122.4233
-weather(37.8267, -122.4233, (error, data) => {
-  if (error) return console.log(error);
-  console.log(data);
-});
+if (!address) {
+  return console.log("Address Not Provided");
+} else {
+  geocode(address, (error, locationData) => {
+    if (error) return console.log(error);
+    //   console.log(data);
+
+    console.log(locationData);
+
+    // 37.8267, -122.4233
+    forecast(
+      locationData.latitude,
+      locationData.longitude,
+      (error, forecastData) => {
+        if (error) return console.log(error);
+        // console.log(data);
+
+        console.log(locationData.location);
+        console.log(forecastData);
+      }
+    );
+  });
+}
